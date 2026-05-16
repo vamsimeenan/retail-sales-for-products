@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Retail Analytics Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f5f5f5;color:#333}header{background:#2c3e50;color:white;padding:20px 30px}.header-sub{color:#bdc3c7;font-size:14px;margin-top:5px}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;padding:20px 30px}.kpi{background:white;border-radius:8px;padding:20px;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,0.1)}.kpi-label{font-size:12px;color:#666;margin-bottom:8px}.kpi-value{font-size:28px;font-weight:bold;color:#2c3e50}.charts{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:0 30px 20px}.chart-card{background:white;border-radius:8px;padding:20px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}.chart-card.full{grid-column:1/-1}.chart-title{font-size:14px;font-weight:bold;color:#555;margin-bottom:12px}table{width:100%;border-collapse:collapse;font-size:13px}th{background:#f8f9fa;padding:8px;text-align:left;border-bottom:2px solid #dee2e6}td{padding:8px;border-bottom:1px solid #dee2e6}.footer{text-align:center;padding:20px;color:#888;font-size:12px}</style>
+</head><body>
+<header><h1 style="font-size:22px">Retail Sales & Inventory Analytics</h1><div class="header-sub">TechZone Stores | 5 Stores | 10 Staff | 200 Customers | 2022-2023 | MySQL retail_db</div></header>
+<div class="kpis">
+<div class="kpi"><div class="kpi-label">TOTAL REVENUE</div><div class="kpi-value" style="color:#27ae60">₹34.2Cr</div></div>
+<div class="kpi"><div class="kpi-label">TOTAL ORDERS</div><div class="kpi-value">1,000</div></div>
+<div class="kpi"><div class="kpi-label">CUSTOMERS</div><div class="kpi-value">197</div></div>
+<div class="kpi"><div class="kpi-label">AVG DISCOUNT</div><div class="kpi-value" style="color:#e74c3c">9.8%</div></div>
+</div>
+<div class="charts">
+<div class="chart-card"><div class="chart-title">Revenue by Brand (₹ Cr)</div><div style="position:relative;height:220px"><canvas id="brandChart"></canvas></div></div>
+<div class="chart-card"><div class="chart-title">Revenue by Store (₹ Cr)</div><div style="position:relative;height:220px"><canvas id="storeChart"></canvas></div></div>
+<div class="chart-card full"><div class="chart-title">Monthly Revenue Trend (₹ Lakhs)</div><div style="position:relative;height:180px"><canvas id="trendChart"></canvas></div></div>
+<div class="chart-card"><div class="chart-title">Staff Performance (Orders Handled)</div><div style="position:relative;height:260px"><canvas id="staffChart"></canvas></div></div>
+<div class="chart-card"><div class="chart-title">Top 5 Products by Revenue</div><table><thead><tr><th>Product</th><th>Brand</th><th>Revenue</th></tr></thead><tbody>
+<tr><td>HP Spectre</td><td>HP</td><td>₹2.34Cr</td></tr>
+<tr><td>Surface Pro</td><td>Apple</td><td>₹2.10Cr</td></tr>
+<tr><td>Lenovo ThinkPad</td><td>Lenovo</td><td>₹2.08Cr</td></tr>
+<tr><td>MSI Gaming</td><td>Asus</td><td>₹1.96Cr</td></tr>
+<tr><td>Asus ZenBook</td><td>Asus</td><td>₹1.96Cr</td></tr>
+</tbody></table></div>
+</div>
+<div class="footer">Retail Sales & Inventory Intelligence System | Vamsi Meenan Ravuri | MySQL + Python + GitHub Pages</div>
+<script>
+new Chart(document.getElementById('brandChart'),{type:'bar',data:{labels:['Apple','Asus','Lenovo','Xiaomi','Samsung','HP','Dell','OnePlus'],datasets:[{data:[7.74,6.03,5.29,4.23,4.05,3.78,2.09,1.02],backgroundColor:['#3498db','#2ecc71','#e74c3c','#f39c12','#9b59b6','#1abc9c','#e67e22','#34495e'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:10}}},y:{ticks:{callback:v=>'₹'+v+'Cr'}}}}});
+new Chart(document.getElementById('storeChart'),{type:'bar',data:{labels:['Delhi','Bangalore','Mumbai','Chennai','Hyderabad'],datasets:[{data:[7.33,7.27,7.01,6.78,5.83],backgroundColor:'#3498db',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₹'+v+'Cr'}}}}});
+new Chart(document.getElementById('trendChart'),{type:'line',data:{labels:["Jan'22","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan'23","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],datasets:[{data:[117.7,126.4,154,140.9,117.7,163.7,162,150.1,128.6,134.1,134,99.2,177.8,136.6,135.8,151.8,132.9,80.3,138.2,158.5,187,178.5,167.2,149.3],borderColor:'#3498db',backgroundColor:'rgba(52,152,219,0.1)',fill:true,tension:0.4,pointRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},maxRotation:45}},y:{ticks:{callback:v=>'₹'+v+'L'}}}}});
+new Chart(document.getElementById('staffChart'),{type:'bar',data:{labels:['Anita','Vikram','Sanjay','Priya','Ravi','Kiran','Deepak','Arun','Meera','Sunita'],datasets:[{data:[114,112,104,103,102,100,96,94,94,81],backgroundColor:'#9b59b6',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+</script>
+</body></html>
