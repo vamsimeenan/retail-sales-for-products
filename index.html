@@ -1,132 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Retail Analytics - TechZone</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:#060d1a;color:#e2e8f0;font-family:'Rajdhani',sans-serif;}
-header{background:#00112b;border-bottom:2px solid #00d4ff55;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;}
-.h1{font-family:'Orbitron',monospace;font-size:20px;color:#00d4ff;letter-spacing:2px;}
-.hsub{font-size:12px;color:#4a6fa5;margin-top:3px;}
-.tags{display:flex;gap:8px;}
-.tag{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid;}
-.tb{background:#00d4ff15;color:#00d4ff;border-color:#00d4ff44;}
-.tg{background:#10b98115;color:#10b981;border-color:#10b98144;}
-.ta{background:#f59e0b15;color:#f59e0b;border-color:#f59e0b44;}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:20px 28px;}
-.kpi{background:#0a1628;border:1px solid #1a2d4a;border-radius:12px;padding:18px 20px;border-top:3px solid;}
-.kpi.k1{border-top-color:#00d4ff;}.kpi.k2{border-top-color:#10b981;}.kpi.k3{border-top-color:#8b5cf6;}.kpi.k4{border-top-color:#f59e0b;}
-.kpi-label{font-size:11px;color:#4a6fa5;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
-.kpi-val{font-size:32px;font-weight:700;font-family:'Orbitron',monospace;}
-.kpi.k1 .kpi-val{color:#00d4ff;}.kpi.k2 .kpi-val{color:#10b981;}.kpi.k3 .kpi-val{color:#8b5cf6;}.kpi.k4 .kpi-val{color:#f59e0b;}
-.kpi-sub{font-size:11px;color:#334155;margin-top:4px;}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 28px 14px;}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;padding:0 28px 14px;}
-.full{grid-column:1/-1;}
-.card{background:#0a1628;border:1px solid #1a2d4a;border-radius:12px;padding:20px;}
-.ctitle{font-size:11px;color:#4a6fa5;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;font-weight:700;}
-table{width:100%;border-collapse:collapse;font-size:13px;}
-th{color:#4a6fa5;font-size:10px;text-transform:uppercase;letter-spacing:1px;padding:8px;border-bottom:1px solid #1a2d4a;text-align:left;}
-td{padding:8px;border-bottom:1px solid #0d1e35;color:#cbd5e1;}
-tr:last-child td{border:none;}
-.seg-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.seg-label{font-size:13px;width:90px;color:#94a3b8;}
-.seg-bar-wrap{flex:1;background:#1a2d4a;border-radius:4px;height:10px;}
-.seg-bar{height:10px;border-radius:4px;}
-.seg-val{font-size:12px;width:40px;text-align:right;color:#64748b;}
-.stock-wrap{background:#1a2d4a;border-radius:4px;height:8px;margin-top:5px;}
-.stock-bar{height:8px;border-radius:4px;}
-footer{text-align:center;padding:18px;color:#1e3a5f;font-size:11px;border-top:1px solid #0d1e35;margin-top:14px;letter-spacing:1px;}
-</style>
-</head>
-<body>
-<header>
-  <div><div class="h1">TECHZONE RETAIL ANALYTICS</div><div class="hsub">retail_db · MySQL · 5 Stores · 10 Staff · 200 Customers · 2022-2023</div></div>
-  <div class="tags"><span class="tag tb">LIVE DATA</span><span class="tag tg">1000 ORDERS</span><span class="tag ta">2022-2023</span></div>
-</header>
-<div class="kpis">
-  <div class="kpi k1"><div class="kpi-label">Total Revenue</div><div class="kpi-val">34.2Cr</div><div class="kpi-sub">Across 5 stores</div></div>
-  <div class="kpi k2"><div class="kpi-label">Total Orders</div><div class="kpi-val">1,000</div><div class="kpi-sub">All branches</div></div>
-  <div class="kpi k3"><div class="kpi-label">Customers</div><div class="kpi-val">197</div><div class="kpi-sub">Unique buyers</div></div>
-  <div class="kpi k4"><div class="kpi-label">Avg Discount</div><div class="kpi-val">9.8%</div><div class="kpi-sub">Store average</div></div>
-</div>
-<div class="grid2">
-  <div class="card"><div class="ctitle">Revenue by Brand (Cr)</div><div style="position:relative;height:260px;"><canvas id="c1"></canvas></div></div>
-  <div class="card"><div class="ctitle">Revenue by Store (Cr)</div><div style="position:relative;height:260px;"><canvas id="c2"></canvas></div></div>
-</div>
-<div class="grid2" style="padding-top:0;">
-  <div class="card full"><div class="ctitle">Monthly Revenue Trend 2022-2023 (Lakhs)</div><div style="position:relative;height:220px;"><canvas id="c3"></canvas></div></div>
-</div>
-<div class="grid2" style="padding-top:0;">
-  <div class="card"><div class="ctitle">Staff Performance (Orders Handled)</div><div style="position:relative;height:340px;"><canvas id="c4"></canvas></div></div>
-  <div class="card"><div class="ctitle">Top 5 Products by Revenue</div>
-    <table>
-      <thead><tr><th>#</th><th>Product</th><th>Brand</th><th>Revenue</th><th>Units</th></tr></thead>
-      <tbody>
-        <tr><td style="color:#f59e0b;font-weight:700;">1</td><td>HP Spectre x360</td><td>HP</td><td style="color:#10b981;">2.34Cr</td><td>89</td></tr>
-        <tr><td style="color:#94a3b8;font-weight:700;">2</td><td>Surface Pro 9</td><td>Microsoft</td><td style="color:#10b981;">2.10Cr</td><td>76</td></tr>
-        <tr><td style="color:#cd7f32;font-weight:700;">3</td><td>Lenovo ThinkPad X1</td><td>Lenovo</td><td style="color:#10b981;">2.08Cr</td><td>82</td></tr>
-        <tr><td style="color:#64748b;">4</td><td>MSI Gaming Laptop</td><td>MSI</td><td style="color:#10b981;">1.96Cr</td><td>71</td></tr>
-        <tr><td style="color:#64748b;">5</td><td>Asus ZenBook Pro</td><td>Asus</td><td style="color:#10b981;">1.96Cr</td><td>74</td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-<div class="grid3" style="padding-top:0;">
-  <div class="card">
-    <div class="ctitle">Customer Segments</div>
-    <div class="seg-row"><div class="seg-label">Premium</div><div class="seg-bar-wrap"><div class="seg-bar" style="width:62%;background:#00d4ff;"></div></div><div class="seg-val">62%</div></div>
-    <div class="seg-row"><div class="seg-label">Regular</div><div class="seg-bar-wrap"><div class="seg-bar" style="width:25%;background:#8b5cf6;"></div></div><div class="seg-val">25%</div></div>
-    <div class="seg-row"><div class="seg-label">Occasional</div><div class="seg-bar-wrap"><div class="seg-bar" style="width:13%;background:#f59e0b;"></div></div><div class="seg-val">13%</div></div>
-    <div style="margin-top:14px;"><div class="ctitle" style="margin-bottom:8px;">Avg Order Value</div><div style="font-size:28px;font-weight:700;color:#00d4ff;font-family:'Orbitron',monospace;">3.42L</div><div style="font-size:12px;color:#334155;margin-top:4px;">Per transaction avg</div></div>
-  </div>
-  <div class="card">
-    <div class="ctitle">Category Revenue Split</div>
-    <div style="position:relative;height:200px;"><canvas id="c5"></canvas></div>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
-      <span style="font-size:11px;color:#00d4ff;">● Laptops 48%</span>
-      <span style="font-size:11px;color:#10b981;">● Phones 22%</span>
-      <span style="font-size:11px;color:#8b5cf6;">● Tablets 15%</span>
-      <span style="font-size:11px;color:#f59e0b;">● Accessories 10%</span>
-      <span style="font-size:11px;color:#ef4444;">● Others 5%</span>
-    </div>
-  </div>
-  <div class="card">
-    <div class="ctitle">Stock Levels by Category</div>
-    <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;"><span>Laptops</span><span style="color:#10b981;">480 units</span></div><div class="stock-wrap"><div class="stock-bar" style="width:80%;background:#10b981;"></div></div></div>
-    <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;"><span>Smartphones</span><span style="color:#00d4ff;">320 units</span></div><div class="stock-wrap"><div class="stock-bar" style="width:53%;background:#00d4ff;"></div></div></div>
-    <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;"><span>Tablets</span><span style="color:#8b5cf6;">210 units</span></div><div class="stock-wrap"><div class="stock-bar" style="width:35%;background:#8b5cf6;"></div></div></div>
-    <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;"><span>Accessories</span><span style="color:#f59e0b;">650 units</span></div><div class="stock-wrap"><div class="stock-bar" style="width:100%;background:#f59e0b;"></div></div></div>
-    <div><div style="display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;"><span>Others</span><span style="color:#ef4444;">90 units</span></div><div class="stock-wrap"><div class="stock-bar" style="width:15%;background:#ef4444;"></div></div></div>
-  </div>
-</div>
-<div class="grid2" style="padding-top:0;padding-bottom:0;">
-  <div class="card full">
-    <div class="ctitle">All Store Details</div>
-    <table>
-      <thead><tr><th>Store</th><th>City</th><th>Revenue</th><th>Orders</th><th>Customers</th><th>Top Brand</th><th>Avg Discount</th></tr></thead>
-      <tbody>
-        <tr><td style="color:#00d4ff;font-weight:600;">Store 1</td><td>Delhi</td><td style="color:#10b981;">7.33Cr</td><td>214</td><td>42</td><td>Apple</td><td>9.2%</td></tr>
-        <tr><td style="color:#00d4ff;font-weight:600;">Store 2</td><td>Bangalore</td><td style="color:#10b981;">7.27Cr</td><td>208</td><td>40</td><td>Asus</td><td>10.1%</td></tr>
-        <tr><td style="color:#00d4ff;font-weight:600;">Store 3</td><td>Mumbai</td><td style="color:#10b981;">7.01Cr</td><td>197</td><td>38</td><td>Lenovo</td><td>9.8%</td></tr>
-        <tr><td style="color:#00d4ff;font-weight:600;">Store 4</td><td>Chennai</td><td style="color:#10b981;">6.78Cr</td><td>192</td><td>41</td><td>Samsung</td><td>9.5%</td></tr>
-        <tr><td style="color:#00d4ff;font-weight:600;">Store 5</td><td>Hyderabad</td><td style="color:#10b981;">5.83Cr</td><td>189</td><td>36</td><td>HP</td><td>10.3%</td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Retail Analytics - TechZone</title><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script><style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#060d1a;color:#e2e8f0;font-family:sans-serif;}header{background:#00112b;border-bottom:2px solid #00d4ff55;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;}.h1{font-size:22px;color:#00d4ff;font-weight:900;letter-spacing:2px;}.hsub{font-size:12px;color:#4a6fa5;margin-top:3px;}.tags{display:flex;gap:8px;}.tag{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid;}.tb{background:#00d4ff15;color:#00d4ff;border-color:#00d4ff44;}.tg{background:#10b98115;color:#10b981;border-color:#10b98144;}.ta{background:#f59e0b15;color:#f59e0b;border-color:#f59e0b44;}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:20px 28px;}.kpi{background:#0a1628;border:1px solid #1a2d4a;border-radius:12px;padding:18px 20px;border-top:3px solid;}.kpi.k1{border-top-color:#00d4ff;}.kpi.k2{border-top-color:#10b981;}.kpi.k3{border-top-color:#8b5cf6;}.kpi.k4{border-top-color:#f59e0b;}.kpi-label{font-size:11px;color:#4a6fa5;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}.kpi-val{font-size:32px;font-weight:900;}.kpi.k1 .kpi-val{color:#00d4ff;}.kpi.k2 .kpi-val{color:#10b981;}.kpi.k3 .kpi-val{color:#8b5cf6;}.kpi.k4 .kpi-val{color:#f59e0b;}.kpi-sub{font-size:11px;color:#334155;margin-top:4px;}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 28px 14px;}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;padding:0 28px 14px;}.full{grid-column:1/-1;}.card{background:#0a1628;border:1px solid #1a2d4a;border-radius:12px;padding:20px;}.ctitle{font-size:11px;color:#4a6fa5;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;font-weight:700;}table{width:100%;border-collapse:collapse;font-size:13px;}th{color:#4a6fa5;font-size:10px;text-transform:uppercase;padding:8px;border-bottom:1px solid #1a2d4a;text-align:left;}td{padding:8px;border-bottom:1px solid #0d1e35;color:#cbd5e1;}tr:last-child td{border:none;}.seg-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}.seg-label{font-size:13px;width:90px;color:#94a3b8;}.seg-bar-wrap{flex:1;background:#1a2d4a;border-radius:4px;height:10px;}.seg-bar{height:10px;border-radius:4px;}.seg-val{font-size:12px;width:40px;text-align:right;color:#64748b;}.stock-wrap{background:#1a2d4a;border-radius:4px;height:8px;margin-top:5px;}.stock-bar{height:8px;border-radius:4px;}footer{text-align:center;padding:18px;color:#1e3a5f;font-size:11px;border-top:1px solid #0d1e35;margin-top:14px;letter-spacing:1px;}</style></head><body>
+<header><div><div class="h1">TECHZONE RETAIL ANALYTICS</div><div class="hsub">retail_db · MySQL · 5 Stores · 10 Staff · 200 Customers · 2022-2023</div></div><div class="tags"><span class="tag tb">LIVE DATA</span><span class="tag tg">1000 ORDERS</span><span class="tag ta">2022-2023</span></div></header>
+<div class="kpis"><div class="kpi k1"><div class="kpi-label">Total Revenue</div><div class="kpi-val">Rs34.2Cr</div><div class="kpi-sub">Across 5 stores</div></div><div class="kpi k2"><div class="kpi-label">Total Orders</div><div class="kpi-val">1,000</div><div class="kpi-sub">All branches</div></div><div class="kpi k3"><div class="kpi-label">Customers</div><div class="kpi-val">197</div><div class="kpi-sub">Unique buyers</div></div><div class="kpi k4"><div class="kpi-label">Avg Discount</div><div class="kpi-val">9.8%</div><div class="kpi-sub">Store average</div></div></div>
+<div class="grid2"><div class="card"><div class="ctitle">Revenue by Brand (Cr)</div><div style="position:relative;height:260px;"><canvas id="c1"></canvas></div></div><div class="card"><div class="ctitle">Revenue by Store (Cr)</div><div style="position:relative;height:260px;"><canvas id="c2"></canvas></div></div></div>
+<div class="grid2" style="padding-top:0;"><div class="card full"><div class="ctitle">Monthly Revenue Trend 2022-2023 (Lakhs)</div><div style="position:relative;height:220px;"><canvas id="c3"></canvas></div></div></div>
+<div class="grid2" style="padding-top:0;"><div class="card"><div class="ctitle">Staff Performance (Orders Handled)</div><div style="position:relative;height:340px;"><canvas id="c4"></canvas></div></div><div class="card"><div class="ctitle">Top 5 Products by Revenue</div><table><thead><tr><th>#</th><th>Product</th><th>Brand</th><th>Revenue</th><th>Units</th></tr></thead><tbody><tr><td style="color:#f59e0b;font-weight:700;">1</td><td>HP Spectre x360</td><td>HP</td><td style="color:#10b981;">2.34Cr</td><td>89</td></tr><tr><td style="color:#94a3b8;font-weight:700;">2</td><td>Surface Pro 9</td><td>Microsoft</td><td style="color:#10b981;">2.10Cr</td><td>76</td></tr><tr><td style="color:#cd7f32;font-weight:700;">3</td><td>Lenovo ThinkPad X1</td><td>Lenovo</td><td style="color:#10b981;">2.08Cr</td><td>82</td></tr><tr><td style="color:#64748b;">4</td><td>MSI Gaming Laptop</td><td>MSI</td><td style="color:#10b981;">1.96Cr</td><td>71</td></tr><tr><td style="color:#64748b;">5</td><td>Asus ZenBook Pro</td><td>Asus</td><td style="color:#10b981;">1.96Cr</td><td>74</td></tr></tbody></table></div></div>
+<div class="grid3" style="padding-top:0;"><div class="card"><div class="ctitle">Customer Segments</div><div class="seg-row"><div class="seg-label">Premium</div><div class="seg-bar-wrap"><div class="seg-bar" style="width:62%;background:#00d4ff;"></div></div><div class="seg-val">62%</div></div><div class="seg-row"><div class="seg-label">Regular</div><div class="seg-bar-wrap"><div class="seg-bar" style="width:25%;background:#8b5cf6;"></div></div><div class="seg-val">25%</div></div><div class="seg-row"><div class="seg-label">Occasional</div><div class="seg-bar-wrap"><div class="seg-bar" style="width:13%;background:#f59e0b;"></div></div><div class="seg-val">13%</div></div><div style="margin-top:14px;"><div class="ctitle" style="margin-bottom:8px;">Avg Order Value</div><div style="font-size:28px;font-weight:700;color:#00d4ff;">3.42L</div><div style="font-size:12px;color:#334155;margin-top:4px;">Per transaction avg</div></div></div><div class="card"><div class="ctitle">Category Revenue Split</div><div style="position:relative;height:200px;"><canvas id="c5"></canvas></div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;"><span style="font-size:11px;color:#00d4ff;">● Laptops 48%</span><span style="font-size:11px;color:#10b981;">● Phones 22%</span><span style="font-size:11px;color:#8b5cf6;">● Tablets 15%</span><span style="font-size:11px;color:#f59e0b;">● Accessories 10%</span><span style="font-size:11px;color:#ef4444;">● Others 5%</span></div></div><div class="card"><div class="ctitle">Stock Levels by Category</div><div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;"><span>Laptops</span><span style="color:#10b981;">480 units</span></div><div class="stock-wrap"><div class="stock-bar" style="width:80%;background:#10b981;"></div></div></div><div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;"><span>Smartphones</span><span style="color:#00d4ff;">320 units</span></div><div class="stock-wrap"><div class="stock-bar" style="width:53%;background:#00d4ff;"></div></div></div><div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;"><span>Tablets</span><span style="color:#8b5cf6;">210 units</span></div><div class="stock-wrap"><div class="stock-bar" style="width:35%;background:#8b5cf6;"></div></div></div><div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;"><span>Accessories</span><span style="color:#f59e0b;">650 units</span></div><div class="stock-wrap"><div class="stock-bar" style="width:100%;background:#f59e0b;"></div></div></div><div><div style="display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;"><span>Others</span><span style="color:#ef4444;">90 units</span></div><div class="stock-wrap"><div class="stock-bar" style="width:15%;background:#ef4444;"></div></div></div></div></div>
+<div class="grid2" style="padding-top:0;padding-bottom:0;"><div class="card full"><div class="ctitle">All Store Details</div><table><thead><tr><th>Store</th><th>City</th><th>Revenue</th><th>Orders</th><th>Customers</th><th>Top Brand</th><th>Avg Discount</th></tr></thead><tbody><tr><td style="color:#00d4ff;font-weight:600;">Store 1</td><td>Delhi</td><td style="color:#10b981;">7.33Cr</td><td>214</td><td>42</td><td>Apple</td><td>9.2%</td></tr><tr><td style="color:#00d4ff;font-weight:600;">Store 2</td><td>Bangalore</td><td style="color:#10b981;">7.27Cr</td><td>208</td><td>40</td><td>Asus</td><td>10.1%</td></tr><tr><td style="color:#00d4ff;font-weight:600;">Store 3</td><td>Mumbai</td><td style="color:#10b981;">7.01Cr</td><td>197</td><td>38</td><td>Lenovo</td><td>9.8%</td></tr><tr><td style="color:#00d4ff;font-weight:600;">Store 4</td><td>Chennai</td><td style="color:#10b981;">6.78Cr</td><td>192</td><td>41</td><td>Samsung</td><td>9.5%</td></tr><tr><td style="color:#00d4ff;font-weight:600;">Store 5</td><td>Hyderabad</td><td style="color:#10b981;">5.83Cr</td><td>189</td><td>36</td><td>HP</td><td>10.3%</td></tr></tbody></table></div></div>
 <footer>RETAIL SALES AND INVENTORY INTELLIGENCE SYSTEM | VAMSI MEENAN RAVURI | MySQL + PYTHON + GITHUB PAGES | 2024</footer>
 <script>
-Chart.defaults.color='#4a6fa5';
-Chart.defaults.borderColor='#0d1e35';
-new Chart(document.getElementById('c1'),{type:'bar',data:{labels:['Apple','Asus','Lenovo','Xiaomi','Samsung','HP','Dell','OnePlus'],datasets:[{data:[7.74,6.03,5.29,4.23,4.05,3.78,2.09,1.02],backgroundColor:['#00d4ff','#10b981','#8b5cf6','#f59e0b','#ef4444','#06b6d4','#84cc16','#f97316'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:v=>'Rs'+v.raw+'Cr'}}},scales:{x:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5',font:{size:11}}},y:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5',callback:v=>'Rs'+v+'Cr'}}}}});
-new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['Delhi','Bangalore','Mumbai','Chennai','Hyderabad'],datasets:[{data:[7.33,7.27,7.01,6.78,5.83],backgroundColor:['#00d4ff','#06b6d4','#0284c7','#0369a1','#075985'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:v=>'Rs'+v.raw+'Cr'}}},scales:{x:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5'}},y:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5',callback:v=>'Rs'+v+'Cr'}}}}});
-new Chart(document.getElementById('c3'),{type:'line',data:{labels:["Jan22","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan23","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],datasets:[{label:'Revenue',data:[117.7,126.4,154,140.9,117.7,163.7,162,150.1,128.6,134.1,134,99.2,177.8,136.6,135.8,151.8,132.9,80.3,138.2,158.5,187,178.5,167.2,149.3],borderColor:'#00d4ff',backgroundColor:'rgba(0,212,255,0.08)',fill:true,tension:0.4,pointRadius:3,pointBackgroundColor:'#00d4ff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5',font:{size:10},maxRotation:45,autoSkip:false}},y:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5',callback:v=>'Rs'+v+'L'}}}}});
-new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['Anita S','Vikram R','Sanjay K','Priya M','Ravi T','Kiran B','Deepak N','Arun P','Meera J','Sunita L'],datasets:[{data:[114,112,104,103,102,100,96,94,94,81],backgroundColor:'#8b5cf6',borderRadius:4,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5'}},y:{grid:{color:'#0d1e35'},ticks:{color:'#94a3b8',font:{size:12}}}}}});
-new Chart(document.getElementById('c5'),{type:'doughnut',data:{labels:['Laptops','Phones','Tablets','Accessories','Others'],datasets:[{data:[48,22,15,10,5],backgroundColor:['#00d4ff','#10b981','#8b5cf6','#f59e0b','#ef4444'],borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:v=>v.label+': '+v.raw+'%'}}}}});
-</script>
-</body>
-</html>
+Chart.defaults.color='#4a6fa5';Chart.defaults.borderColor='#0d1e35';
+new Chart(document.getElementById('c1'),{type:'bar',data:{labels:['Apple','Asus','Lenovo','Xiaomi','Samsung','HP','Dell','OnePlus'],datasets:[{data:[7.74,6.03,5.29,4.23,4.05,3.78,2.09,1.02],backgroundColor:['#00d4ff','#10b981','#8b5cf6','#f59e0b','#ef4444','#06b6d4','#84cc16','#f97316'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5'}},y:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5'}}}}});
+new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['Delhi','Bangalore','Mumbai','Chennai','Hyderabad'],datasets:[{data:[7.33,7.27,7.01,6.78,5.83],backgroundColor:['#00d4ff','#06b6d4','#0284c7','#0369a1','#075985'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5'}},y:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5'}}}}});
+new Chart(document.getElementById('c3'),{type:'line',data:{labels:["Jan22","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan23","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],datasets:[{data:[117.7,126.4,154,140.9,117.7,163.7,162,150.1,128.6,134.1,134,99.2,177.8,136.6,135.8,151.8,132.9,80.3,138.2,158.5,187,178.5,167.2,149.3],borderColor:'#00d4ff',backgroundColor:'rgba(0,212,255,0.08)',fill:true,tension:0.4,pointRadius:3,pointBackgroundColor:'#00d4ff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5',font:{size:10},maxRotation:45,autoSkip:false}},y:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5'}}}}});
+new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['Anita S','Vikram R','Sanjay K','Priya M','Ravi T','Kiran B','Deepak N','Arun P','Meera J','Sunita L'],datasets:[{data:[114,112,104,103,102,100,96,94,94,81],backgroundColor:'#8b5cf6',borderRadius:4,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#0d1e35'},ticks:{color:'#4a6fa5'}},y:{grid:{color:'#0d1e35'},ticks:{color:'#94a3b8'}}}}});
+new Chart(document.getElementById('c5'),{type:'doughnut',data:{labels:['Laptops','Phones','Tablets','Accessories','Others'],datasets:[{data:[48,22,15,10,5],backgroundColor:['#00d4ff','#10b981','#8b5cf6','#f59e0b','#ef4444'],borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+</script></body></html>
